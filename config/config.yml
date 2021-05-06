@@ -1,0 +1,5 @@
+environment: env
+mongo:
+  server: mongodb://mongo:27017
+  database: Mgo
+  collection: Planets
