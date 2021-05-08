@@ -5,10 +5,15 @@ Tecnologias:
 Golang
 Docker
 
+*ulr = localhost:8080*
+
+
 Rotas das API's:
 
 :large_blue_diamond: Post:
-{url}/planets
+
+:heavy_minus_sign: {url}/planets
+
 body: {
   "name": "Tatooine",
   "climate": "arid",
@@ -25,14 +30,16 @@ Response:
 }
 
 :large_blue_diamond: Get:
-{url}/planets/  -> Retorna todos os planetas
 
-{url}/planets/:id  -> Retorna o planeta com o id específico
+:heavy_minus_sign: {url}/planets/  -> Retorna todos os planetas
 
-{url}/planets?name={"name":"Tatooine"}  -> Retorna todos os planetas dado um filtro. No exemplo é o filtro é "name":"Tatooine", além do "name" o filtro poderia ser pelos atributos "climate" e "terrain".
+:heavy_minus_sign: {url}/planets/:id  -> Retorna o planeta com o id específico
+
+:heavy_minus_sign: {url}/planets?name={"name":"Tatooine"}  -> Retorna todos os planetas dado um filtro.
 
 :large_blue_diamond: Delete
-{url}/planets/:id  -> Remove o planeta com o id específico.
+
+:heavy_minus_sign: {url}/planets/:id  -> Remove o planeta com o id específico.
 
 
 
