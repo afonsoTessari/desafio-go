@@ -1,10 +1,8 @@
-**Desafio-go** 
 
 :star:  **Desafio Star Wars**  :star:
 
 Tecnologias:
-Golang
-Docker
+Golang e Docker
 
 *ulr = localhost:8080*
 
