@@ -25,9 +25,9 @@ func main() {
 	planets := router.Group("/planets")
 
 	planets.GET("/", handlers.SearchPlanet(client))
-	planets.GET("/{id}", handlers.GetPlanet(client))
+	planets.GET("/:id", handlers.SearchPlanetById(client))
 	planets.POST("/", handlers.InsertPlanet(client))
-	planets.DELETE("/{id}", handlers.DeletePlanet(client))
+	planets.DELETE("/:id", handlers.DeletePlanet(client))
 
 	http.ListenAndServe(":8080", router)
 }

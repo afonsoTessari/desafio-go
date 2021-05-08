@@ -11,7 +11,7 @@ import (
 
 type PlanetInterface interface {
 	Insert(models.Planet) (models.Planet, error)
-	Get(string) (models.Planet, error)
+	SearchById(string) (models.Planet, error)
 	Search(interface{}) ([]models.Planet, error)
 	Delete(string) (models.PlanetDelete, error)
 }
@@ -24,15 +24,15 @@ type PlanetClient struct {
 func (c *PlanetClient) Insert(docs models.Planet) (models.Planet, error) {
 	planet := models.Planet{}
 
-	res, err := c.Collection.InsertOne(c.Ctx, planet)
+	res, err := c.Collection.InsertOne(c.Ctx, docs)
 	if err != nil {
 		return planet, err
 	}
 	id := res.InsertedID.(primitive.ObjectID).Hex()
-	return c.Get(id)
+	return c.SearchById(id)
 }
 
-func (c *PlanetClient) Get(id string) (models.Planet, error) {
+func (c *PlanetClient) SearchById(id string) (models.Planet, error) {
 	planet := models.Planet{}
 
 	_id, err := primitive.ObjectIDFromHex(id)
