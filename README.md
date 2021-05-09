@@ -4,6 +4,8 @@
 Tecnologias:
 Golang e Docker
 
+Rodar o projeto através do comando:  docker-compose up --build
+
 *ulr = localhost:8080*
 
 
