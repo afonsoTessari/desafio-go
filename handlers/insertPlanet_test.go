@@ -1,49 +1,48 @@
 package handlers_test
 
 import (
-	"context"
-	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"starwars/config"
 	"starwars/database"
 	"starwars/handlers"
 	"starwars/models"
 	"strings"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/mock"
 )
 
-var client database.PlanetInterface
+// var client database.PlanetInterface
 
-func init() {
-	conf := config.MongoConfiguration{
-		Server:     "mongodb://localhost:27017",
-		Database:   "Mgo",
-		Collection: "PlanetsTest",
-	}
-	ctx := context.TODO()
+// func init() {
+// 	conf := config.MongoConfiguration{
+// 		Server:     "mongodb://localhost:27017",
+// 		Database:   "Mgo",
+// 		Collection: "PlanetsTest",
+// 	}
+// 	ctx := context.TODO()
 
-	db := database.ConnectDB(ctx, conf)
-	collection := db.Collection(conf.Collection)
+// 	db := database.ConnectDB(ctx, conf)
+// 	collection := db.Collection(conf.Collection)
 
-	client = &database.PlanetClient{
-		Collection: collection,
-		Ctx:        ctx,
-	}
-}
+// 	client = &database.PlanetClient{
+// 		Collection: collection,
+// 		Ctx:        ctx,
+// 	}
+// }
 
 func TestInsertPlanet(t *testing.T) {
+	client := &database.MockPlanetClient{}
 	tests := map[string]struct {
 		payload      string
 		expectedCode int
 		expected     string
 	}{
 		"should return 200": {
-			payload:      `{"name": "Kalee","climate": "seco","terrain": "arid"}`,
+			payload:      `{"name":"Alderaan","climate":"seco","terrain":"arid"}`,
 			expectedCode: 200,
-			expected:     "Kalee",
+			expected:     "seco",
 		},
 		"should return 400": {
 			payload:      "invalid string",
@@ -53,20 +52,19 @@ func TestInsertPlanet(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			req, _ := http.NewRequest("POST", "/planets", strings.NewReader(test.payload))
+			client.On("Insert", mock.Anything).Return(models.Planet{}, nil)
+			req, _ := http.NewRequest("POST", "/planets/", strings.NewReader(test.payload))
 			rec := httptest.NewRecorder()
-			h := http.HandlerFunc(handlers.InsertPlanet(client))
-			h.ServeHTTP(rec, req)
+
+			r := gin.Default()
+			r.POST("/planets/", handlers.InsertPlanet(client))
+			r.ServeHTTP(rec, req)
 
 			if test.expectedCode == 200 {
-				planet := models.Planet{}
-				_ = json.Unmarshal([]byte(rec.Body.String()), &planet)
-				assert.Equal(t, test.expected, planet.Name)
-				assert.NotNil(t, planet.Id)
-
-				_, _ = client.Delete(planet.Id.(string))
+				client.AssertExpectations(t)
+			} else {
+				client.AssertNotCalled(t, "Insert")
 			}
-			assert.Equal(t, test.expectedCode, rec.Code)
 		})
 	}
 }
