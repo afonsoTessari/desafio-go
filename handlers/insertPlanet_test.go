@@ -13,25 +13,6 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-// var client database.PlanetInterface
-
-// func init() {
-// 	conf := config.MongoConfiguration{
-// 		Server:     "mongodb://localhost:27017",
-// 		Database:   "Mgo",
-// 		Collection: "PlanetsTest",
-// 	}
-// 	ctx := context.TODO()
-
-// 	db := database.ConnectDB(ctx, conf)
-// 	collection := db.Collection(conf.Collection)
-
-// 	client = &database.PlanetClient{
-// 		Collection: collection,
-// 		Ctx:        ctx,
-// 	}
-// }
-
 func TestInsertPlanet(t *testing.T) {
 	client := &database.MockPlanetClient{}
 	tests := map[string]struct {
