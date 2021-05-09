@@ -87,16 +87,6 @@ func TestSearchPlanet(t *testing.T) {
 			} else {
 				client.AssertNotCalled(t, "Search")
 			}
-
-			// if test.expectedCode == 200 {
-			// 	planets := []models.Planet{}
-			// 	_ = json.Unmarshal([]byte(rec.Body.String()), &planets)
-			// 	for _, planet := range planets {
-			// 		assert.Equal(t, test.expected, planet.Name)
-			// 	}
-			// }
-
-			// assert.Equal(t, test.expectedCode, rec.Code)
 		})
 	}
 }
